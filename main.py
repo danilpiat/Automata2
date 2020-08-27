@@ -2,7 +2,7 @@
 from __future__ import print_function
 from lex import get_lex
 from pars import get_parser, get_errors, get_log
-
+from termcolor import colored, cprint
 from visitor import Visitor
 
 parser = get_parser()
