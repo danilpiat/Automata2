@@ -180,6 +180,16 @@ class Robot:
                 return 'o'
 
 
+    def demolish(self):
+        if (self.y - 1) >= 0:
+            if self.map[self.x][(self.y - 1)] == '1':
+                self.drill_durability -= 1
+                self.map[self.x][(self.y - 1)] = '0'
+                return True
+            else:
+                return False
+        else:
+            return False
 
     def demolish(self):
         if self.direct == 'up':

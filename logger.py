@@ -1,6 +1,5 @@
 from termcolor import colored, cprint
 from anytree import Node, RenderTree
-
 class Logger:
     def __init__(self):
         self.code = None
