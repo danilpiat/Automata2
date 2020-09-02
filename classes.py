@@ -66,6 +66,8 @@ class Stack:
             type = type.value
         if (isinstance(type, TypeArray)):
             type = 'array of %s' % type.value
+            if value is None:
+                value = {}
         # print (type)
         if (isinstance(name, Variable)):
             name = name.varname

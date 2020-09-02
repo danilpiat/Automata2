@@ -1,0 +1,14 @@
+begin(m);
+
+int function sum(int n)
+start
+print(n);
+enter(n>1) do int b = n+sum(n-1); return b; until true;
+enter(n==1) do return n; until true;
+return 0;
+stop;
+
+int function m()
+start
+print(sum(5));
+stop;

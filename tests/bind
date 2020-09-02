@@ -1,0 +1,7 @@
+begin(m);
+int function m()
+start
+str b;bind b;
+measure;
+print(b);
+stop;

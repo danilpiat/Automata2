@@ -56,6 +56,8 @@ class Logger:
                 cprint(i, 'red')
     def print_tree(self):
         cprint("tree", 'yellow')
+        if self.result_tree is None:
+            raise Exception
         for pre, fill, node in RenderTree(self.result_tree):
             print("%s%s,%s" % (pre, node.name, node.line))
 

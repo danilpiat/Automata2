@@ -109,8 +109,13 @@ class Semantic:
         self.logger.log_semantic(t)
         self.logger.log_semantic(node.functionname.varname)
         self.logger.log_semantic(self.functions_table)
+        if t is None:
+            self.log_error(s="undeclared func=%s"%node.functionname.varname)
+            return
         if t.args is not None:
-            return [self.get_type(i) for i in t.args.nodes.value]
+               #print(t.args.nodes)
+               #print(self.get_type(t.args.nodes[0]))
+            return [self.get_type(i) for i in t.args.nodes]
         else:
             return None
 
@@ -178,6 +183,8 @@ class Semantic:
             return [self.visit(node)]
         elif isinstance(node, GetArrElement):
             return [self.visit(node)]
+        elif isinstance(node, VariableDeclaration) or isinstance(node, VariableDeclarationMultiply):
+            return [node.type.value]
 
 
     def arr_get_type(self, k, types):
@@ -189,6 +196,7 @@ class Semantic:
                 types.append(self.visit(i)[0])
 
     def xvisitVariable(self, result):
+        print(result.varname)
         t = self.stack.get_st(result.varname, all=True)
         if t is None:
             self.log_error(s="not declared variable %s at line: %s" % (result.varname, result.line))
@@ -219,10 +227,8 @@ class Semantic:
         else:
             found = self.get_type(result.right)
         expected_types = self.get_type(result.left)
-
         expected_types = list(flatten(expected_types))[0]
         found = list(flatten(found))[0]
-
         self.logger.log_semantic("exp=%s" % expected_types)
         # self.semantic_check(i.right)
         self.logger.log_semantic(result.left)
@@ -259,7 +265,20 @@ class Semantic:
                                                                 code=result.left)
         self.new_frame()
         self.parent_function = result.functionname.varname
-        # TODO ADD ARG_LIST to variable
+        func = self.stack.get_func(result.functionname.varname)
+        if func.args is not None:
+            for j in range(len(func.args.nodes)):
+                name = None
+                type = func.args.nodes[j].type.value
+                func_arg = func.args.nodes[j]
+                if (isinstance(func_arg, Variable)):
+                    name = func_arg.varname
+                elif (isinstance(func_arg, VariableDeclaration)):
+                    if (isinstance(func_arg.node, Assigment)):
+                        name = func_arg.node.left.varname
+                    else:
+                        name = func_arg.node.varname
+                self.stack.add_st(type=type, name=name, value=None)
         self.visit(result.left)
         self.remove_frame()
 
@@ -296,7 +315,7 @@ class Semantic:
         else:
             self.stack.add_st(type, name, None)
         self.logger.log_semantic(self.symbol_table)
-        self.visit(result.node)
+        return result.type
 
     def xvisitVariableDeclarationMultiply(self, result):
         self.logger.log_semantic("semantic_check (VariableDeclarationMultiply)")
@@ -318,7 +337,7 @@ class Semantic:
                                  (names[j], line))
             else:
                 self.stack.add_st(type, name=names[j], value=None)
-            self.visit(x)
+        return result.type
 
     def xvisitFunctionCall(self, result):
         self.logger.log_semantic("semantic_check (FunctionCall)")
@@ -328,6 +347,8 @@ class Semantic:
         self.logger.log_semantic("expected:%s" % expected_types)
         if found == expected_types:
             self.logger.log_semantic("good types")
+            func = self.stack.get_func(result.functionname.varname)
+
         else:
             self.logger.log_semantic("bad types")
             self.log_error(s="bad types at line: %s; expected %s and found %s" %

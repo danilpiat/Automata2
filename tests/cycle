@@ -1,0 +1,6 @@
+begin(m);
+int function m()
+start
+int a = 5;
+enter(a) do a=a+1; until false;
+stop;

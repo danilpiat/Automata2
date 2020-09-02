@@ -1,0 +1,8 @@
+begin(m);
+int function m()
+start
+array of int z, x= {1,2}, y = {1,2};
+z[1][1] = 5;
+print(z[1][1]);
+print(z);
+stop;

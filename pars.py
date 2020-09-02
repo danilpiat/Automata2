@@ -294,6 +294,8 @@ def p_varlist(p):
     '''varlist : variable
                 | varlist COMMA variable
                 | factor
+                | varlist COMMA expression
+                | expression
                 | varlist COMMA factor
                 | logic_expression
                 | varlist COMMA logic_expression'''
@@ -358,7 +360,6 @@ def p_logic(p):
             | NE'''
     p[0] = p[1]
     log("logic")
-
 
 def p_binary_operators(p):
     '''expression : term

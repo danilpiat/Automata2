@@ -1,0 +1,11 @@
+begin(m);
+
+int function test()
+start
+int b = 5;
+print(b);
+stop;
+int function m()
+start
+test();
+stop;

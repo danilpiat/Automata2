@@ -126,7 +126,7 @@ class Visitor:
 
     def xvisitRobot(self, node):
         if node.op != "measure":
-           return self.robot.action(node)
+            return self.robot.action(node)
         elif node.op == "measure":
             self.stack.set_st(name=self.bind, value=self.robot.action(node))
 
@@ -152,11 +152,15 @@ class Visitor:
             raise XExceptions("not a GetArrElement")
         ind = self.xvisitIndexing(node.left)
         arr = self.stack.get_st(node.varname.varname)
+        arr_copy = arr
         self.logger.log_visit(arr)
-        for i in ind[0:-1]:
+        for i in ind[0:-1]:#[0:-1]
+            if arr.get(i) is None:
+                arr[i] = {}
             arr = arr[i]
             self.logger.log_visit(arr)
-        arr[ind[-1]] = x
+        arr[i] = x
+        self.stack.set_st(node.varname.varname, arr_copy)
         self.logger.log_visit(arr)
         self.logger.append_screen(self.symbol_table)
 
@@ -293,6 +297,9 @@ class Visitor:
         self.new_frame()
         parent_frame = self.stack.call_stack[-2]
         func = self.stack.get_func(node.functionname.varname)
+        if func is None:
+
+            return
         if func.args is not None:
             for j in range(len(func.args.nodes)):
                 name = None
@@ -310,7 +317,10 @@ class Visitor:
                     if (isinstance(call_arg, Variable)):
                         value = parent_frame.symbol_table.get(call_arg.varname)[1]
                     else:
-                        value = self.visit(call_arg.right)
+                        if isinstance(call_arg, (Number,Boolean,String)) :
+                            value = call_arg.value
+                        else:
+                            value = self.visit(call_arg.right)
                 else:
                     if isinstance(func_arg.node, Variable):
                         value = self.visit(func_arg.node.varname)
@@ -353,10 +363,10 @@ class Visitor:
             s = [self.visit(i) for i in node.strx.nodes]
             print(*s, sep=',')
             for i in s:
-                print(type(i))
+                print("type=%s"%type(i))
         else:
             s = self.visit(node.strx)
-            print(s)
+            print("el=%s"%s)
 
     def xvisitString(self, node):
         return node.value.strip("\'")

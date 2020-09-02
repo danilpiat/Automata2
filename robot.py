@@ -22,7 +22,7 @@ class Robot:
 
     def __load_map(self, s=None, sep=None, header=None):
         if s is None:
-            s = "tests/map_simple"
+            s = "maps/map2" #maps/map_simple
         if sep is None:
             sep = ";"
         self.map = pd.read_csv(s, sep=sep, header=header).astype(str)
@@ -178,18 +178,6 @@ class Robot:
                 return self.map[self.x-1][self.y]
             else:
                 return 'o'
-
-
-    def demolish(self):
-        if (self.y - 1) >= 0:
-            if self.map[self.x][(self.y - 1)] == '1':
-                self.drill_durability -= 1
-                self.map[self.x][(self.y - 1)] = '0'
-                return True
-            else:
-                return False
-        else:
-            return False
 
     def demolish(self):
         if self.direct == 'up':

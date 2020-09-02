@@ -1,0 +1,11 @@
+begin(m);
+int function m()
+start
+int a,b;
+a=5;
+b=6;
+print(a+b);
+print(a-b);
+int c = b+a+a;
+print(a,b,c);
+stop;

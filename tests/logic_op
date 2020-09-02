@@ -1,0 +1,10 @@
+begin(m);
+int function m()
+start
+bool b = true, a=false;
+print(a,b);
+print(a == b);
+int c=1,c2=2;
+print(c,c2);
+print(c==c2);
+stop;

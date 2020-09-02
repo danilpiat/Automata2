@@ -1,0 +1,134 @@
+x3 = '''
+begin(main);
+int function main() start int function main() x; int function main() x; stop;
+int function main(int x, int y) start x=5; int x,y; stop;
+int function main(int x=2, int y) start int function main(int x=5, int y) start x=5; int x,y; stop; stop;
+int function main(int x=true, int y) start stop;
+int function main(int x, int y) start x=true; stop;
+int function main(int x, int y) start x==x==5; stop;
+int function main(int x, int y) start enter (x<5) do x=5+5; until true; stop;
+int function main(int x, int y) start x<5; stop;
+int function main(int x, int y) start main(x); stop;
+int function main(int x, int y) main(x);
+int function main(int x, int y) start main(x); stop;
+int function main(int x, int y) start call (main, x); stop;
+int function main() array of int x,y;
+int function main() x=5;
+int function main()array of int z, x= {1,2}, y = {1,2};
+int function main() (int)x[x];
+int function main(int x, int y) start call (main, x); stop;
+int function main(int x, int y) start call (main); stop;
+int function main(int x, int y) start array of array of array of int z; stop;
+int function main() x[x][x];
+int function main(int x, int y) start array of array of array of int z = {{{1}}},zz={{{1}}}; call(main,z); stop;
+int function main() bind left_x;
+int function main() left;
+int function main() start x; x+x; stop;
+int function main(int x,int x) start x(5,5); stop;
+'''
+
+x4 = '''
+begin(main);
+int function main(int x) start int x=5,y=6,z=7; main2(5,x); stop;
+int function main2(int a,int b,int c = 80) start int xx=5,yy=6,zz=7; int abc=a+b+c+xx+yy+zz,axx=abc; int abcc=abc,x=abcc; m(); stop;
+int function m() start int a =5; stop;
+'''
+
+
+x5 = '''
+begin(m);
+
+
+int function m()
+start
+int c = 5;
+int function fact(int a, int b)
+start
+int c = a + b;
+return c;
+return a;
+stop;
+
+int z = fact(c,c);
+stop;
+'''
+
+x6 ='''
+begin(m);
+int function m()
+start
+int c = 5;
+enter (c<10)
+do
+c=c+1;
+until true;
+stop;
+'''
+
+x7 ='''
+begin(m);
+
+int function m2()
+start
+int c = 5;
+return c;
+stop;
+
+int function m()
+start
+int c = 5;
+c=c+m2();
+stop;
+'''
+x9 ='''
+begin(m);
+
+int function m()
+start
+int c = 6, b = true;
+stop;
+'''
+
+
+x8 ='''
+begin(m);
+
+int function m()
+start
+array of bool c = {{true,false},{true,false},{true}};
+str a = (str)1;
+int aa = 2;
+int ab = aa = 6;
+c[1][1] = true;
+stop;
+'''
+
+
+x10 ='''
+begin(m);
+
+int function m()
+start
+array of int c = {1,2,3,4,5,6,7,8,9,10};
+int i = 0;
+enter(i<11)
+do
+c[i] = i+i;
+i = i + 1;
+until true;
+stop;
+
+x11 = '''
+begin(m);
+int function m()
+start
+array of str c = {};
+int i = 0;
+enter(i<11)
+do
+c[i] = (str)(i+i);
+i = i + 1;
+print(i);
+until true;
+stop;
+'''

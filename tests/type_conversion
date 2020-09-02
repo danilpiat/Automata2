@@ -1,0 +1,6 @@
+begin(m);
+int function m()
+start
+int a = 5;
+str b = (str)a;
+stop;

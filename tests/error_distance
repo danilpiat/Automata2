@@ -1,0 +1,11 @@
+begin(m);
+int function m2()
+start
+print(c);
+stop;
+int function m2()
+start
+int b = 5;
+m2(b);
+print(d);
+stop;

@@ -1,0 +1,6 @@
+begin(m);
+int function m()
+start
+str b = "aa"; int a = 5;
+print(b+a);
+stop;
