@@ -38,6 +38,10 @@ class Stack:
             return None, None
 
     def get_st(self, name, all=False):
+        # print("-"*10)
+        # for i in self.call_stack:
+        #     print(i)
+        # print("-"*10)
         t = None
         for i in self.call_stack[::-1]:
             t = i.symbol_table.get(name)
@@ -89,10 +93,13 @@ class StackFrame:
     def __init__(self):
         self.symbol_table = {}
         self.functions_table = {}
-
+    def __str__(self):
+        return str(self.symbol_table)
 
 class Function:
     def __init__(self, arglist, ret_type, code):
         self.args = arglist
         self.ret = ret_type
         self.code = code
+
+

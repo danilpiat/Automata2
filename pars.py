@@ -135,7 +135,8 @@ def p_print_statement(p):
 
 
 def p_return_statement(p):
-    '''return : RETURN expression'''
+    '''return : RETURN expression
+              | RETURN factor'''
     p[0] = ReturnStatement(line=p.lineno(2), expr=p[2])
     log("return")
 
@@ -185,7 +186,7 @@ def p_function_call_call(p):
 def p_enter_do_until(p):
     '''enter_do_until : ENTER LPAREN logic_expression RPAREN DO statement_list UNTIL boolean
                       | ENTER LPAREN factor RPAREN DO statement_list UNTIL boolean'''
-    p[0] = EnterDoUntil(line=p.lineno(1), logic=p[3], statementList=p[6],until=p[8])
+    p[0] = EnterDoUntil(line=p.lineno(1), logic=p[3], statementList=p[6], until=p[8])
     log('enter_do_until')
 
 

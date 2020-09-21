@@ -116,8 +116,8 @@ class Visitor:
 
     def xvisitList(self, node):
         for i in node.nodes:
-            if isinstance(i,ReturnStatement):
-                raise XExceptions("out")
+            #if isinstance(i,ReturnStatement):
+                #raise XExceptions("out")
             self.visit(i)
 
     def xvisitBind(self, node):
@@ -270,9 +270,9 @@ class Visitor:
         elif isinstance(node.node, Assigment):
             name = node.node.left.varname
             value = self.visit(node.node.right)
-        if value is None and self.return_address is not None:
-            value = self.return_address
-            self.return_address = None
+        #if value is None and self.return_address is not None:
+            #value = self.return_address
+            #self.return_address = None
         self.stack.add_st(type, name, value)
         # self.logger.log_visit(self.symbol_table)
         self.logger.append_screen(self.symbol_table.copy())
@@ -295,57 +295,54 @@ class Visitor:
 
     def xvisitFunctionCall(self, node):
         self.new_frame()
-        parent_frame = self.stack.call_stack[-2]
         func = self.stack.get_func(node.functionname.varname)
         if func is None:
-
             return
         if func.args is not None:
             for j in range(len(func.args.nodes)):
                 name = None
                 type = func.args.nodes[j].type.value
                 func_arg = func.args.nodes[j]
+                value = None
+                call_arg = node.arglist.nodes[j]
                 if (isinstance(func_arg, Variable)):
                     name = func_arg.varname
+                    value = self.stack.get_st(call_arg.varname)
                 elif (isinstance(func_arg, VariableDeclaration)):
                     if (isinstance(func_arg.node, Assigment)):
                         name = func_arg.node.left.varname
                     else:
                         name = func_arg.node.varname
-                if len(node.arglist.nodes) > j:
-                    call_arg = node.arglist.nodes[j]
-                    if (isinstance(call_arg, Variable)):
-                        value = parent_frame.symbol_table.get(call_arg.varname)[1]
-                    else:
-                        if isinstance(call_arg, (Number,Boolean,String)) :
-                            value = call_arg.value
-                        else:
-                            value = self.visit(call_arg.right)
-                else:
-                    if isinstance(func_arg.node, Variable):
-                        value = self.visit(func_arg.node.varname)
+                    value = self.visit(call_arg)
+                    #print("%s=%s"%(call_arg,value))
                 self.stack.add_st(type=type, name=name, value=value)
         else:
-            self.logger.log_visit("without args")
+             self.logger.log_visit("without args")
         try:
-            self.visit(func.code)
+             self.visit(func.code)
         except XExceptions:
-            k = 0
-        # self.logger.log_visit(self.symbol_table)
+             k = 0
         self.logger.append_screen(self.symbol_table)
         self.remove_frame()
         return self.return_address
 
     def xvisitReturn(self, node):
         self.return_address = self.visit(node.left)
+        raise XExceptions("out")
 
     def xvisitEnterDoUntil(self, node):
         res = self.visit(node.logic)
         until = self.visit(node.until)
         while res == until:
             self.new_frame()
-            self.visit(node.statementList)
-            self.remove_frame()
+            try:
+                self.visit(node.statementList)
+                #print(self.symbol_table)
+                self.remove_frame()
+            except XExceptions:
+                 k = 0
+                 self.remove_frame()
+                 raise XExceptions("out")
             res = self.visit(node.logic)
             self.logger.log_visit("res = %s,until = %s" % (res, until))
 
