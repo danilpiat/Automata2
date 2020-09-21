@@ -1,0 +1,18 @@
+begin(m);
+
+int function f(int n)
+start
+   enter(n==0) do return 0; until true;
+   enter(n==1) do return 1; until true;
+   enter(n>1) do int b = f(n-2)+f(n-1); return b; until true;
+stop;
+
+int function m()
+start
+   print("f(0)==0==",f(0));
+   print("f(1)==1==",f(1));
+   print("f(2)==1==",f(2));
+   print("f(3)==2==",f(3));
+   print("f(4)==3==",f(4));
+   print("f(5)==5==",f(5));
+stop;
